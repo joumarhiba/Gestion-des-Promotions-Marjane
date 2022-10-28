@@ -24,7 +24,7 @@ public class CategoryDao {
     public void addCategory(){
 
         Category cat = new Category();
-        cat.setName("TV");
+        cat.setName("Alimentation");
         session.persist(cat);
         transaction.commit();
         session.close();

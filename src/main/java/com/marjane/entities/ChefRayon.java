@@ -17,7 +17,8 @@ public class ChefRayon {
     private String password;
     private int categoryId;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST )
+    @JoinColumn(name = "center_id",referencedColumnName = "id")
     private Center center;
 
 

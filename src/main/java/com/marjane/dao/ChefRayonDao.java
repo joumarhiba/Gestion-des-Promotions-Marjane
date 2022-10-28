@@ -34,7 +34,7 @@ public class ChefRayonDao {
         calendar3.add(Calendar.DATE, 1);
         ChefRayonDao cr = new ChefRayonDao();
         cr.updatePromo();
-        cr.getPromotions(calendar3.getTime());
+       //cr.getPromotions(calendar3.getTime());
     }
 
     public String getPromotions(Date currentTime){
@@ -48,7 +48,7 @@ public class ChefRayonDao {
             calendar1.add(Calendar.DATE, 1);
 
 
-            String string2 = "12:00";
+            String string2 = "21:00";
             Date time2 = new SimpleDateFormat("HH:mm").parse(string2);
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTime(time2);
@@ -79,17 +79,19 @@ public class ChefRayonDao {
 
     public String updatePromo(){
         String str = "";
-        int status =1;
-        int idP = 14;
+        int status =0;
+        int idP = 21;
         Query qUpdate = session.createQuery("UPDATE Promotion set status =:s  WHERE id=:idP");
         qUpdate.setParameter("s",status);
         qUpdate.setParameter("idP",idP);
         int r = qUpdate.executeUpdate();
         if(r>0){
             str = "La promotion est appliquée mnt !!!!!";
+            System.out.println(str);
         }
         else {
             str = "Nooo something wrong the update not applied";
+            System.out.println(str);
         }
         transaction.commit();
         session.close();

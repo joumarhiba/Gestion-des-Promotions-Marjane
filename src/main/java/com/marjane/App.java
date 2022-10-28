@@ -33,35 +33,27 @@ public class App {
         adminG.setPassword("12345678");
         session.persist(adminG);*/
 
-// ADD ADMIN
+//ADMIN
         Admin admin = new Admin();
-        admin.setEmail("testingHashhhh@gmail.com");
+        admin.setEmail("adminCenter@gmail.com");
         admin.setPassword("123456");
-        String pwd = admin.getPassword();
-        CryptPwd cp = new CryptPwd();
-        String hashedP = cp.cryptage(pwd);
-        admin.setPassword(hashedP);
-        session.persist(admin);
 
-// ADD ADMIN IN CENTER  BY ADMINGeneral
+// ADMIN IN CENTER  BY ADMINGeneral
         Center c = new Center();
-        c.setVille("casablanca");
+        c.setVille("Safi");
         c.setAdmin(admin);
-        session.persist(c);
 
 
-        // ADD category
+        // category
         Category cat = new Category();
         cat.setName("multimedia");
-         session.persist(cat);
 
         // ADD ChefRayon
        ChefRayon cr = new ChefRayon();
-        cr.setEmail("chefElectroniqueee@gmail.com");
+        cr.setEmail("chefCooking@gmail.com");
         cr.setPassword("123456");
         cr.setCenter(c);
         cr.setCategoryId(cat.getId());
-        session.persist(cr);
 
        //ADD PROMOTION
         Calendar cal = Calendar.getInstance();
@@ -69,55 +61,21 @@ public class App {
         Date date = cal.getTime();
         Promotion promotion = new Promotion();
         promotion.setDate(date);
-        promotion.setPromo(39.00);
+        promotion.setPromo(15.00);
         promotion.setCategory(cat);
         promotion.setCenter(c);
         if(promotion.getCategory().getName().equalsIgnoreCase("multimedia") && promotion.getPromo() > 20.00){
-            System.out.println(" les promotion sur la categorie multimédia ne doit pas dépasser 20%");
+            System.out.println(" les promotions sur la categorie multimédia ne doivent pas dépasser 20%");
             transaction.rollback();
         }
-        else{
-            System.out.println(" the promotion is added successful");
+        else if(promotion.getPromo() > 50.00) {
+            System.out.println(" les promotions ne doivent pas dépasser 50% sur l'ensemble des catégories");
+            transaction.rollback();
+        }else{
         session.persist(promotion);
+            System.out.println(" the promotion is added successful");
         }
 
-        //getCenterAdmins
-
-       List<Admin> admins = session.createQuery("from Admin").list();
-       List aList = session.createSQLQuery("SELECT * From admin").list();
-       //lambda
-        admins.forEach((item) -> {
-            System.out.println("admin email : "+item.getEmail());
-        });
-
-        /*for (Iterator iterator = admins.iterator(); iterator.hasNext();){
-            Admin a = new Admin();
-            if(iterator.hasNext()){
-                System.out.println("First Name: " + a.getEmail());
-                System.out.println("  Last Name: " + a.getPassword());
-            }
-        }*/
-
-
-    //GET LIST PROMOS BY CENTER_ID
-
-
-        Query q= session.getNamedQuery("Promotion.byCenter");
-        q.setParameter(1, 1);
-        List<Promotion> promos = (List<Promotion>) q.getResultList();
-        for(Promotion promo : promos){
-            System.out.println("LA poromotion est : "+promo.getPromo()+"%");
-        }
-
-//delete the admin center
-      /*  Query query = session.createQuery("DELETE FROM Admin a where a.id=?1");
-        query.setParameter(1,36);
-        int row = query.executeUpdate();
-        if(row >0){
-            System.out.println("DEleteeeeeeeeeeeeeeeeeed");
-        }else {
-            System.out.println("this admin not found");
-        }*/
 
         //JOINTURE en Category & Promotion non appliquée
         Query q2 = session.createQuery("From Category as c INNER JOIN c.promotions as p WHERE status = 0");

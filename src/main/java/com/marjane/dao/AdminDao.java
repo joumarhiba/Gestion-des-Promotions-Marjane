@@ -30,9 +30,9 @@ public class AdminDao {
 Admin admin = new Admin();
     public static void main(String[] args) throws NoSuchAlgorithmException, MessagingException, IOException {
         AdminDao ad = new AdminDao();
-       ad.addAdmin();
-       //ad.addAdminCenter();
-       ad.getAdmins();
+        ad.addAdmin();
+      // ad.addAdminCenter();
+       //ad.getAdmins();
     }
 
     public void addAdmin() throws NoSuchAlgorithmException, MessagingException, IOException {
@@ -48,19 +48,19 @@ Admin admin = new Admin();
 
 
         AdminGen aGen = new AdminGen();
-        SendEmail sendEmail = new SendEmail();
 
         aGen.setAdminId(1);
         aGen.setEmail("supAdmin@gmail.com");
         aGen.setPassword("12345678");
+
         admin.setEmail("joumhiba7@gmail.com");
-        sendEmail.go(admin.getEmail());
-        admin.setPassword(sendEmail.a);
-        admin.setAdminGen(aGen);
+        String p = "123456";
+        admin.setPassword(p);
         String pwd = admin.getPassword();
         CryptPwd cp = new CryptPwd();
         String hashedP = cp.cryptage(pwd);
         admin.setPassword(hashedP);
+        admin.setAdminGen(aGen);
         session.persist(admin);
         System.out.println("is added");
         transaction.commit();

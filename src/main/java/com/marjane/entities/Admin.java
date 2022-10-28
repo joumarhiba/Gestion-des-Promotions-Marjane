@@ -23,9 +23,10 @@ public class Admin {
     private String email;
     private String password;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "admingen_adminid", referencedColumnName = "adminid")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(columnDefinition = "int default 0")
+    //@JoinColumn(columnDefinition = "int default 1")
     private AdminGen adminGen;
 
 
