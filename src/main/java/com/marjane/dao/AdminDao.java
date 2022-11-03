@@ -2,9 +2,7 @@ package com.marjane.dao;
 
 import com.marjane.CryptPwd;
 import com.marjane.SendEmail;
-import com.marjane.entities.Admin;
-import com.marjane.entities.AdminGen;
-import com.marjane.entities.Center;
+import com.marjane.entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -12,48 +10,43 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import javax.mail.MessagingException;
-import javax.persistence.EntityManager;
-//import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+//import javax.mail.MessagingException;
+import javax.persistence.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class AdminDao {
-    private EntityManager entityManager;
-    static Session session;
-    static Transaction transaction;
-    static SessionFactory sessionFactory;
 
 Admin admin = new Admin();
-    public static void main(String[] args) throws NoSuchAlgorithmException, MessagingException, IOException {
+    final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+            .configure().build();
+
+    SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+    Session session  = sessionFactory.openSession();
+    Transaction transaction =session.beginTransaction();
+    public static void main(String[] args) throws NoSuchAlgorithmException,  IOException {
         AdminDao ad = new AdminDao();
-        ad.addAdmin();
+       //ad.addAdmin();
       // ad.addAdminCenter();
        //ad.getAdmins();
+        ad.validate("adminC@gmail.com","123456");
     }
 
-    public void addAdmin() throws NoSuchAlgorithmException, MessagingException, IOException {
+    public void addAdmin(Admin admn) throws NoSuchAlgorithmException {
 
-
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from hibernate.cfg.xml
-                .build();
-
-        SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        Session session  = sessionFactory.openSession();
-        Transaction transaction =session.beginTransaction();
 
 
         AdminGen aGen = new AdminGen();
 
-        aGen.setAdminId(1);
+       /* aGen.setAdminId(1);
         aGen.setEmail("supAdmin@gmail.com");
         aGen.setPassword("12345678");
+        aGen.setRole(0);
 
-        admin.setEmail("joumhiba7@gmail.com");
+        admin.setEmail("testRole@gmail.com");
         String p = "123456";
         admin.setPassword(p);
         String pwd = admin.getPassword();
@@ -61,20 +54,18 @@ Admin admin = new Admin();
         String hashedP = cp.cryptage(pwd);
         admin.setPassword(hashedP);
         admin.setAdminGen(aGen);
-        session.persist(admin);
+        admin.setRole(1); */
+        session.persist(admn);
         System.out.println("is added");
         transaction.commit();
-        session.close();
-        sessionFactory.close();
+
     }
 
 
     // ADD ADMIN IN CENTER  BY ADMINGeneral
     public  Center addAdminCenter(){
 
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from hibernate.cfg.xml
-                .build();
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
 
         SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         Session session  = sessionFactory.openSession();
@@ -92,68 +83,87 @@ Admin admin = new Admin();
 
 
     //getCenterAdmins
-public void getAdmins(){
-    final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure() // configures settings from hibernate.cfg.xml
-            .build();
+public List getAdmins(){
 
-    SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-    Session session  = sessionFactory.openSession();
-    Transaction transaction =session.beginTransaction();
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("connect");
-    EntityManager em = emf.createEntityManager();
 
-    List<Admin> admins = session.createQuery("from Admin").list();
-    List aList = session.createSQLQuery("SELECT * From admin").list();
+    List<Admin> admins = (List<Admin>) session.createQuery("From Admin").list();
+    //List<Object[]> adminsO = session.createSQLQuery("SELECT * from center INNER JOIN admin in center.admin_id = admin.id").list();
     transaction.commit();
-    session.close();
-    sessionFactory.close();
     //lambda
-    admins.forEach((item) -> {
-        System.out.println("admin email : "+item.getEmail());
+    admins.forEach((a) -> {
+        System.out.println("admin email : "+a.getId());
     });
+    return admins;
 
 }
 
 
-    }
+public void editCenterAdmin(int idAdmin){
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public AdminDao() {
-
-        // Create Entity manager factory object
-        //EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("connect");
-        // Create Entity manager object
-        //this.entityManager = entityManagerFactory.createEntityManager();
-
-
-        /*final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from hibernate.cfg.xml
-                .build();
-
-        sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        session  = sessionFactory.openSession();
-        transaction =session.beginTransaction();
-    }
-
-    public void insert(Admin entity) throws Exception {
-
-        this.entityManager.persist(entity);
+    transaction =session.beginTransaction();
+        Admin admin = null;
+        transaction = session.beginTransaction();
+        admin = session.get(Admin.class, idAdmin);
         transaction.commit();
-        session.close();
-        sessionFactory.close();
-    }*/
+}
+public void updateCenterAdmin(Admin admin){
+
+      session.saveOrUpdate(admin);
+    transaction.commit();
+
+}
+
+
+public boolean deleteCenterAdmin(int idAdmin){
+
+        Admin admin = session.get(Admin.class , idAdmin);
+        if(admin == null) {
+            session.delete(admin);
+            transaction.commit();
+            return true;
+        }
+
+        return false;
+
+}
+
+    public boolean validate(String email, String password) {
+
+        Admin admin1 = null;
+        AdminGen adminGen = null;
+
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+        SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+            // start a transaction
+            transaction = session.beginTransaction();
+            // get an user object
+            admin1 = (Admin) session.createQuery("FROM Admin a WHERE a.email = :email and a.password= :password")
+                    .setParameter("email", email).setParameter("password",password)
+                    .uniqueResult();
+            adminGen = (AdminGen) session.createQuery("FROM AdminGen ag WHERE ag.email = :email and ag.password= :password")
+                    .setParameter("email", email).setParameter("password",password)
+                    .uniqueResult();
+
+            if (admin1 != null && admin1.getPassword().equals(password) && admin1.getEmail().equalsIgnoreCase(email)) {
+                System.out.println("you're logged as Center Admin");
+                return true;
+            }
+
+            if (adminGen != null && adminGen.getPassword().equals(password) && adminGen.getEmail().equalsIgnoreCase(email)) {
+            System.out.println("you're logged as General Admin");
+            return true;
+            }
+
+            // commit transaction
+            transaction.commit();
+
+        return false;
+    }
+
+
+    }
+
+
 
 

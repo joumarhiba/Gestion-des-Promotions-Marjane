@@ -22,6 +22,8 @@ public class Admin {
     private int id;
     private String email;
     private String password;
+    @Column(columnDefinition = "int default 1")
+    private int role;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "admingen_adminid", referencedColumnName = "adminid")

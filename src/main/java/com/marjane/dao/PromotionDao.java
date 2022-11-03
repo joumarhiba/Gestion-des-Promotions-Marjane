@@ -26,17 +26,17 @@ public class PromotionDao {
     Session session  = sessionFactory.openSession();
     Transaction transaction =session.beginTransaction();
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args)  {
         PromotionDao p = new PromotionDao();
       //  p.listPromotionByIdCategory();
-      p.addPromotion();
+      //p.addPromotion();
     }
 
 
-    public void addPromotion() throws ParseException {
+    public void addPromotion(Promotion promotion) {
 
         // instancier un admin
-        Admin admin = new Admin();
+      /*  Admin admin = new Admin();
         admin.setEmail("adminCenter@gmail.com");
         admin.setPassword("123456");
 
@@ -47,10 +47,15 @@ public class PromotionDao {
         //instancier center
         Center c = new Center();
         c.setVille("Safi");
-        c.setAdmin(admin);
+        c.setAdmin(admin); */
+
+        session.merge(promotion);
+        transaction.commit();
+
+
 
         //add promotion
-        Calendar cal = Calendar.getInstance();
+       /* Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 1);
         Date datedd = cal.getTime();
         String sDate1="2022/12/01";
@@ -58,9 +63,10 @@ public class PromotionDao {
         Promotion promotion = new Promotion();
         promotion.setDate(datedd);
         promotion.setPromo(15.00);
-        promotion.setCategory(cat);
-        promotion.setCenter(c);
-        if(promotion.getCategory().getName().equalsIgnoreCase("multimedia") && promotion.getPromo() > 20.00){
+
+        promotion.setCategory(44444444);
+        promotion.setCenter(333333); */
+       /* if(promotion.getCategory() == 1 && promotion.getPromo() > 20.00){
             System.out.println(" les promotions sur la categorie multimédia ne doivent pas dépasser 20%");
             transaction.rollback();
         }
@@ -73,7 +79,7 @@ public class PromotionDao {
             session.close();
             sessionFactory.close();
             System.out.println(" the promotion is added successful");
-        }
+        } */
 
     }
 
@@ -101,6 +107,31 @@ public class PromotionDao {
 
        }
     }
+
+    public String getAppliedPromotions(){
+
+        List<Promotion> promotionList = null;
+        long nbAppliedPromotion = 0;
+        long nbNotAppliedProtion = 0;
+        long promotion = 0;
+        try {
+                Query qAllP = session.createQuery("FROM Promotion ");
+                System.out.println(" -------------------------------");
+                promotionList = qAllP.getResultList();
+                nbAppliedPromotion = promotionList.stream().filter(i -> i.getStatus() == 1).count();
+                nbNotAppliedProtion = promotionList.stream().filter(i -> i.getStatus() == 0).count();
+                promotion = promotionList.stream().count();
+                System.out.println("********* Le nombre des promotions non-traitées est  :  " + promotionList.stream().filter(i -> i.getStatus() == 0).count());
+                System.out.println("********* Le nombre des promotions appliquées est  :  " + promotionList.stream().filter(i -> i.getStatus() == 1).count());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        transaction.commit();
+        return nbAppliedPromotion+"-"+nbNotAppliedProtion+"-"+promotion;
+    }
+
 
 
 }

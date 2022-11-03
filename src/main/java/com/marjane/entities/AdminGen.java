@@ -15,7 +15,13 @@ public class AdminGen {
     private int adminId;
     private String email;
     private String password;
+    @Column(columnDefinition = "int default 0")
+    private  int role;
 
     @OneToMany(mappedBy = "adminGen")
     private List<Admin> adminList;
+
+    public void AdminGen(int adminId) {
+        this.adminId = adminId;
+        }
 }

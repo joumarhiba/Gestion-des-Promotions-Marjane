@@ -1,4 +1,4 @@
-package com.marjane;
+package com.marjane.dao;
 
 import com.marjane.entities.*;
 import org.hibernate.Session;
@@ -46,22 +46,24 @@ public class App {
 
         // category
         Category cat = new Category();
-        cat.setName("multimedia");
+        cat.setName("alimentation2");
 
         // ADD ChefRayon
        ChefRayon cr = new ChefRayon();
         cr.setEmail("chefCooking@gmail.com");
         cr.setPassword("123456");
+        cr.setRole(3);
         cr.setCenter(c);
         cr.setCategoryId(cat.getId());
+        session.persist(cr);
 
        //ADD PROMOTION
-        Calendar cal = Calendar.getInstance();
+       /* Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 1);
         Date date = cal.getTime();
         Promotion promotion = new Promotion();
         promotion.setDate(date);
-        promotion.setPromo(15.00);
+        promotion.setPromo(45.00);
         promotion.setCategory(cat);
         promotion.setCenter(c);
         if(promotion.getCategory().getName().equalsIgnoreCase("multimedia") && promotion.getPromo() > 20.00){
@@ -72,10 +74,10 @@ public class App {
             System.out.println(" les promotions ne doivent pas dépasser 50% sur l'ensemble des catégories");
             transaction.rollback();
         }else{
-        session.persist(promotion);
+        //session.persist(promotion);
             System.out.println(" the promotion is added successful");
         }
-
+*/
 
         //JOINTURE en Category & Promotion non appliquée
         Query q2 = session.createQuery("From Category as c INNER JOIN c.promotions as p WHERE status = 0");

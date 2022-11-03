@@ -1,5 +1,7 @@
 package com.marjane.dao;
 
+import com.marjane.entities.Category;
+import com.marjane.entities.ChefRayon;
 import com.marjane.entities.Promotion;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChefRayonDao {
@@ -37,16 +40,16 @@ public class ChefRayonDao {
        //cr.getPromotions(calendar3.getTime());
     }
 
-    public String getPromotions(Date currentTime){
+    public List getPromotions(int idCategory){
 
-        String result = "nothing";
+        List<Object> promotionList = null;
+        String result = null;
         try {
             String string1 = "08:00";
             Date time1 = new SimpleDateFormat("HH:mm").parse(string1);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(time1);
             calendar1.add(Calendar.DATE, 1);
-
 
             String string2 = "21:00";
             Date time2 = new SimpleDateFormat("HH:mm").parse(string2);
@@ -55,25 +58,23 @@ public class ChefRayonDao {
             calendar2.add(Calendar.DATE, 1);
 
             //Date x = calendar3.getTime();
-            if (currentTime.after(calendar1.getTime()) && currentTime.before(calendar2.getTime())) {
-                Query qAllP = session.createQuery("FROM Promotion");
+         //   if (currentTime.after(calendar1.getTime()) && currentTime.before(calendar2.getTime())) {
+                Query qAllP = session.createQuery("SELECT p.promo FROM Category as c INNER JOIN c.promotions as p WHERE c.id = :idCategory");
+                qAllP.setParameter("idCategory",idCategory);
+
                 result = "The statics of promotions : ";
-                System.out.println(result);
-                System.out.println(" -------------------------------");
-                List<Promotion> promotionList = qAllP.getResultList();
-                System.out.println("********* Le nombre des promotions non-traitées est  :  " + promotionList.stream().filter(i -> i.getStatus() == 0).count());
-                System.out.println("********* Le nombre des promotions appliquées est  :  " + promotionList.stream().filter(i -> i.getStatus() == 1).count());
-            }
-            else {
-                result = "The statics of promotions not displayed , time out !";
-            System.out.println(result);
-            }
+                promotionList = qAllP.getResultList();
+          //  }
+          //  else {
+            //    result = "The statics of promotions not displayed , time out !";
+           // System.out.println(result);
+           // }
         } catch (ParseException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
         transaction.commit();
-        return result;
+        return promotionList;
     }
 
 
@@ -100,5 +101,20 @@ public class ChefRayonDao {
     }
 
 
+    public int validate(String email, String password){
+
+        ChefRayon chefRayon;
+
+        chefRayon = (ChefRayon) session.createQuery("FROM ChefRayon cr WHERE cr.email=:email and cr.password=:password")
+                .setParameter("email", email).setParameter("password", password).uniqueResult();
+
+        if(chefRayon != null && chefRayon.getEmail().equals(email) && chefRayon.getPassword().equals((password))) {
+            System.out.println("you're logged as chef rayon");
+            return chefRayon.getCategoryId();
+        }
+        transaction.commit();
+        return 0;
+
+    }
 
 }

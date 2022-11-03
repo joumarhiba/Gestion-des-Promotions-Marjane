@@ -22,6 +22,7 @@ public class Promotion {
     private Double promo;
     @Column(columnDefinition = "int default 0")
     private int status;
+    private Double fidelity;
 
 
 

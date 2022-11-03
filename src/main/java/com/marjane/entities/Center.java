@@ -19,9 +19,8 @@ public class Center {
 
     private String ville;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-
     private Admin admin;
 
     @OneToMany(fetch = FetchType.EAGER)
