@@ -16,14 +16,14 @@
     </a>
 
     <!-- update Promotion -->
-    <a class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer text-white hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white no-underline" href="addPromotion.jsp">
+    <a class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer text-white hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white no-underline" href="editPromotion.jsp">
         <i class="fa fa-edit" aria-hidden="true"></i>
     </a>
 
 
 
     <!-- Logout -->
-   <form action="LogoutServlet" method="get">
+   <form action="LogoutChefRayonServlet" method="get">
                <button type="submit">
                  <svg
                    class="fill-current h-5 w-5 text-white mx-auto hover:text-red-500"

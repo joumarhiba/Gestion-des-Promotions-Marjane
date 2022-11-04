@@ -22,7 +22,7 @@ public class ChefRayonDaoTest {
     @Test
     public  void testUpdateP(){
         ChefRayonDao chefRayonDao = new ChefRayonDao();
-        assertEquals("La promotion est appliquée mnt !!!!!", chefRayonDao.updatePromo());
+        assertEquals("La promotion est appliquée mnt !!!!!", chefRayonDao.updatePromo(23));
     }
 
     @Test

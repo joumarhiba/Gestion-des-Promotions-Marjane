@@ -14,8 +14,7 @@
 <body>
 <%@include file="sidebarAGen.jsp" %>
 <div class="container -top-3/4 flex relative">
-statistiiics
-</div>
+
 <div class="container grid grid-cols-4 gap-x-1">
 
 <%
@@ -52,6 +51,8 @@ for(Admin c : listAdmins) {
 <%
 }
 %>
+</div>
+
 </div>
 </body>
 </html>

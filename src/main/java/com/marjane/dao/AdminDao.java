@@ -37,24 +37,8 @@ Admin admin = new Admin();
 
     public void addAdmin(Admin admn) throws NoSuchAlgorithmException {
 
-
-
         AdminGen aGen = new AdminGen();
 
-       /* aGen.setAdminId(1);
-        aGen.setEmail("supAdmin@gmail.com");
-        aGen.setPassword("12345678");
-        aGen.setRole(0);
-
-        admin.setEmail("testRole@gmail.com");
-        String p = "123456";
-        admin.setPassword(p);
-        String pwd = admin.getPassword();
-        CryptPwd cp = new CryptPwd();
-        String hashedP = cp.cryptage(pwd);
-        admin.setPassword(hashedP);
-        admin.setAdminGen(aGen);
-        admin.setRole(1); */
         session.persist(admn);
         System.out.println("is added");
         transaction.commit();

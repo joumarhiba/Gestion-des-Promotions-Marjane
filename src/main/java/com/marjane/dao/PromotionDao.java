@@ -83,6 +83,23 @@ public class PromotionDao {
 
     }
 
+    public int nonTraits(){
+        int status =0;
+        int idP = -1, result = 0;
+
+        Query qUpdate = session.createQuery("UPDATE Promotion set status =:s WHERE status=:udStatus");
+        qUpdate.setParameter("s",status);
+        qUpdate.setParameter("idP",idP);
+        int r = qUpdate.executeUpdate();
+        if(r>0){
+            result = 1;
+        }
+        else {
+            result = -10000;
+        }
+        transaction.commit();
+        return result =0;
+    }
 
     public void listPromotionByIdCategory() throws ParseException {
         //instancier une categorie
@@ -131,7 +148,6 @@ public class PromotionDao {
         transaction.commit();
         return nbAppliedPromotion+"-"+nbNotAppliedProtion+"-"+promotion;
     }
-
 
 
 }

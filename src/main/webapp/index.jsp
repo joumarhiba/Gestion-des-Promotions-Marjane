@@ -10,7 +10,7 @@
                 <div class="py-12 bg-blue-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
                     <div class="cursor-pointer flex items-center">
                         <div>
-                            <img src="helpers/marjane_logo.png" class="w-1/4 transform duration-200 hover:scale-110 cursor-pointer" />
+                            <img src="adminFiles/marjane_logo.png" class="w-1/4 transform duration-200 hover:scale-110 cursor-pointer" />
                         </div>
 
                     </div>

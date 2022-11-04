@@ -7,6 +7,7 @@ import com.marjane.entities.Admin;
 import com.marjane.entities.AdminGen;
 import com.marjane.entities.Center;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,7 +55,8 @@ public class CenterAdmin extends HttpServlet {
             adminDao.addAdmin(admin);
             CenterDao centerDao = new CenterDao();
             centerDao.addCenter(center);
-            resp.getWriter().println("L admin est ajouté avec center....");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/dashboardAdminGen.jsp");
+            requestDispatcher.forward(req, resp);
 
 
         }catch (Exception e){

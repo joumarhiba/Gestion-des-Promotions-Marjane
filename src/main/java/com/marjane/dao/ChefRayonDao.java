@@ -1,23 +1,22 @@
 package com.marjane.dao;
 
-import com.marjane.entities.Category;
+import com.marjane.entities.Admin;
+import com.marjane.entities.AdminGen;
 import com.marjane.entities.ChefRayon;
-import com.marjane.entities.Promotion;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Query;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class ChefRayonDao {
@@ -36,10 +35,28 @@ public class ChefRayonDao {
         calendar3.setTime(date1);
         calendar3.add(Calendar.DATE, 1);
         ChefRayonDao cr = new ChefRayonDao();
-        cr.updatePromo();
+       // cr.updatePromo();
        //cr.getPromotions(calendar3.getTime());
     }
 
+
+    public int promoInfos(int idCategory){
+
+        String result = null;
+        int id = 0;
+        try {
+            Query getIdPromotion = session.createQuery("SELECT p.id FROM Category as c INNER JOIN c.promotions as p WHERE c.id = :idCategory");
+            getIdPromotion.setParameter("idCategory", idCategory);
+            id = getIdPromotion.getFirstResult();
+
+        }
+        catch(Exception exception){
+            exception.printStackTrace();
+            System.out.println(exception.getMessage());
+        }
+        transaction.commit();
+        return id;
+    }
     public List getPromotions(int idCategory){
 
         List<Object> promotionList = null;
@@ -78,13 +95,12 @@ public class ChefRayonDao {
     }
 
 
-    public String updatePromo(){
+    public String updatePromo(int idPromotion){
         String str = "";
-        int status =0;
-        int idP = 21;
-        Query qUpdate = session.createQuery("UPDATE Promotion set status =:s  WHERE id=:idP");
+        int status =1;
+        Query qUpdate = session.createQuery("UPDATE Promotion set status =:s WHERE id=:idP");
         qUpdate.setParameter("s",status);
-        qUpdate.setParameter("idP",idP);
+        qUpdate.setParameter("idP",idPromotion);
         int r = qUpdate.executeUpdate();
         if(r>0){
             str = "La promotion est appliquée mnt !!!!!";
@@ -100,6 +116,15 @@ public class ChefRayonDao {
         return str;
     }
 
+    public void addChefRayon(ChefRayon chefRayon) throws NoSuchAlgorithmException {
+
+        Admin admin = new Admin();
+
+        session.merge(chefRayon);
+        System.out.println("is added as chefff");
+        transaction.commit();
+
+    }
 
     public int validate(String email, String password){
 
