@@ -11,6 +11,7 @@ import javax.persistence.*;
 
 
 @Entity
+@Table(name ="admin")
 @Data
 @ToString(exclude = {"email","password","adminGen"})
 @NoArgsConstructor
@@ -20,12 +21,13 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String fullname;
     private String email;
     private String password;
     @Column(columnDefinition = "int default 1")
     private int role;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "admingen_adminid", referencedColumnName = "adminid")
     @OnDelete(action = OnDeleteAction.CASCADE)
     //@JoinColumn(columnDefinition = "int default 1")

@@ -39,30 +39,10 @@ Admin admin = new Admin();
 
         AdminGen aGen = new AdminGen();
 
-        session.persist(admn);
+        session.merge(admn);
         System.out.println("is added");
         transaction.commit();
 
-    }
-
-
-    // ADD ADMIN IN CENTER  BY ADMINGeneral
-    public  Center addAdminCenter(){
-
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
-
-        SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        Session session  = sessionFactory.openSession();
-        Transaction transaction =session.beginTransaction();
-
-        Center c = new Center();
-        c.setVille("casablanca");
-        c.setAdmin(admin);
-        session.persist(c);
-        transaction.commit();
-        session.close();
-        sessionFactory.close();
-        return c;
     }
 
 
@@ -71,7 +51,6 @@ public List getAdmins(){
 
 
     List<Admin> admins = (List<Admin>) session.createQuery("From Admin").list();
-    //List<Object[]> adminsO = session.createSQLQuery("SELECT * from center INNER JOIN admin in center.admin_id = admin.id").list();
     transaction.commit();
     //lambda
     admins.forEach((a) -> {
@@ -90,9 +69,26 @@ public void editCenterAdmin(int idAdmin){
         admin = session.get(Admin.class, idAdmin);
         transaction.commit();
 }
-public void updateCenterAdmin(Admin admin){
+public void updateCenterAdmin(AdminGen adminG,String email,String fullname, int role, int idAdmin){
 
-      session.saveOrUpdate(admin);
+        String str = "";
+
+    Query qUpdate = session.createQuery(" update Admin set admingen_adminid=?1, email=?2, fullname=?3, role=?4 where id=?5");
+    qUpdate.setParameter(1,adminG);
+    qUpdate.setParameter(2,email);
+    qUpdate.setParameter(3,fullname);
+    qUpdate.setParameter(4,role);
+    qUpdate.setParameter(5,idAdmin);
+
+    int r = qUpdate.executeUpdate();
+    if(r>0){
+        str = "La promotion est appliquée mnt !!!!!";
+        System.out.println(str);
+    }
+    else {
+        str = "Nooo something wrong the update not applied";
+        System.out.println(str);
+    }
     transaction.commit();
 
 }
@@ -145,6 +141,16 @@ public boolean deleteCenterAdmin(int idAdmin){
         return false;
     }
 
+    public List getAdminById(int idAdmin){
+        List adminInfo = (List<Admin>) session.createQuery("From Admin Where id ="+idAdmin).list();
+
+        return adminInfo;
+    }
+
+    public List getAdminCenterById(int idAdmin){
+        List centerInfo = (List<Center>) session.createQuery("FROM Center WHERE admin ="+admin);
+        return centerInfo;
+    }
 
     }
 

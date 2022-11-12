@@ -4,15 +4,16 @@
   <title>Admin Page</title>
   <%@include file="helpers/links.jsp" %>
 </head>
-<body>
+<body style="background-image: url('helpers/adminImg.jpg');  background-position: center; background-repeat: no-repeat; background-size: cover;">
 <%@include file="sidebarAGen.jsp" %>
 
-<div class="container -top-3/4 flex relative place-content-center">
+<div class="container mt-8 flex relative place-content-center">
+
   <div class="relative sm:max-w-xl sm:mx-auto">
     <form action="CenterAdminServlet" method="post" class="relative px-8 py-8 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
       <div class="max-w-md mx-auto">
         <div class="flex items-center space-x-5">
-          <div class="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">m</div>
+          <div class="h-14 w-14 flex flex-shrink-0 justify-center items-center text-2xl font-mono"><img src="helpers/images.png" /></div>
           <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
             <h2 class="leading-relaxed">Create a center admin</h2>
             <p class="text-sm text-gray-500 font-normal leading-relaxed">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
@@ -22,7 +23,7 @@
           <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
             <div class="flex flex-col">
               <label class="leading-loose">Nom d Utilisateur</label>
-              <input type="text" class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600" placeholder="Username">
+              <input type="text" name="fullname" class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600" placeholder="Username">
             </div>
             <div class="flex flex-col">
               <label class="leading-loose">Email</label>

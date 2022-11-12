@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
+@Table(name="admingen")
 @Data @NoArgsConstructor  @AllArgsConstructor
 public class AdminGen {
     @Id

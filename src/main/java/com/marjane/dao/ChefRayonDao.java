@@ -28,12 +28,8 @@ public class ChefRayonDao {
     Transaction transaction =session.beginTransaction();
 
     public static void main(String[] args) throws ParseException {
-        DateFormat formatter = new SimpleDateFormat("HH:mm");
-        String time = formatter.format(new Date());
-        Date date1=new SimpleDateFormat("HH:mm").parse(time);
-        Calendar calendar3 = Calendar.getInstance();
-        calendar3.setTime(date1);
-        calendar3.add(Calendar.DATE, 1);
+
+
         ChefRayonDao cr = new ChefRayonDao();
        // cr.updatePromo();
        //cr.getPromotions(calendar3.getTime());
@@ -57,12 +53,12 @@ public class ChefRayonDao {
         transaction.commit();
         return id;
     }
-    public List getPromotions(int idCategory){
+    public List getPromotions(int idCategory, Date currentTime){
 
         List<Object> promotionList = null;
         String result = null;
         try {
-            String string1 = "08:00";
+            String string1 = "00:00";
             Date time1 = new SimpleDateFormat("HH:mm").parse(string1);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(time1);
@@ -74,17 +70,22 @@ public class ChefRayonDao {
             calendar2.setTime(time2);
             calendar2.add(Calendar.DATE, 1);
 
-            //Date x = calendar3.getTime();
-         //   if (currentTime.after(calendar1.getTime()) && currentTime.before(calendar2.getTime())) {
-                Query qAllP = session.createQuery("SELECT p.promo FROM Category as c INNER JOIN c.promotions as p WHERE c.id = :idCategory");
+            DateFormat formatter = new SimpleDateFormat("HH:mm");
+            String time = formatter.format(new Date());
+            Date date1=new SimpleDateFormat("HH:mm").parse(time);
+            Calendar calendar3 = Calendar.getInstance();
+            calendar3.setTime(date1);
+            calendar3.add(Calendar.DATE, 1);
+            Date x = calendar3.getTime();
+          //  if (currentTime.after(calendar1.getTime()) && currentTime.before(calendar2.getTime())) {
+                Query qAllP = session.createQuery("SELECT p.promo FROM Category as c INNER JOIN c.promotions as p WHERE c.id = :idCategory and p.status = 0");
                 qAllP.setParameter("idCategory",idCategory);
 
                 result = "The statics of promotions : ";
                 promotionList = qAllP.getResultList();
-          //  }
-          //  else {
-            //    result = "The statics of promotions not displayed , time out !";
-           // System.out.println(result);
+           // }
+           // else {
+             //   result = "The statics of promotions not displayed , time out !";
            // }
         } catch (ParseException e) {
             e.printStackTrace();

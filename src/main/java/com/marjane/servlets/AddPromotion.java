@@ -45,18 +45,17 @@ public class AddPromotion extends HttpServlet {
            promotion.setFidelity(fidelity);
 
            if (promotion.getPromo() < 50.00) {
-               if (!promotion.getCategory().equals("mutlimedia") && promotion.getPromo() < 20.00) {
-                   PromotionDao promotionDao = new PromotionDao();
-                   promotionDao.addPromotion(promotion);
-                   req.setAttribute("successMsg", "La promotion est ajoutée avec succes");
-                   resp.getWriter().println("okkkkay "+promotion);
-                   RequestDispatcher requestDispatcher = req.getRequestDispatcher("/addPromotion.jsp");
-                   requestDispatcher.forward(req, resp);
-               }else {
-                   resp.getWriter().println("L" );
+               if(promotion.getCategory().getId() == 1 && promotion.getPromo() > 20.00) {
                    req.setAttribute("errorMsg", "La promotion n est pas appliquée Vous avez depasser 20% pour Multimedia !!! ");
                    RequestDispatcher requestDispatcher = req.getRequestDispatcher("/addPromotion.jsp");
                    requestDispatcher.forward(req, resp);
+               }else  {
+                   resp.getWriter().println(promotion.getCategory());
+           PromotionDao promotionDao = new PromotionDao();
+           promotionDao.addPromotion(promotion);
+           req.setAttribute("successMsg", "La promotion est ajoutée avec succes");
+           RequestDispatcher requestDispatcher = req.getRequestDispatcher("/addPromotion.jsp");
+           requestDispatcher.forward(req, resp);
                }
            }else {
                resp.getWriter().println("Une promotion ne peut pas depasser 50%");

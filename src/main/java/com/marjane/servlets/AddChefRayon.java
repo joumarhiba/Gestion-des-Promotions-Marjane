@@ -50,6 +50,7 @@ public class AddChefRayon extends HttpServlet {
             ChefRayonDao chefRayonDao = new ChefRayonDao();
             chefRayonDao.addChefRayon(chefRayon);
             CenterDao centerDao = new CenterDao();
+            req.setAttribute("added","le chef du rayon "+email + " est ajoute avec succes");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/adminPage.jsp");
             requestDispatcher.forward(req, resp);
 

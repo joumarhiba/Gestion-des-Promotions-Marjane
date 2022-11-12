@@ -15,7 +15,7 @@
 <body>
 <%@include file="sideBarACenter.jsp" %>
 
-<div class="container -top-3/4 flex relative">
+<div class="container -top-3/4 flex ">
 <div class="container my-24 px-6 mx-auto">
 
   <!-- Section: Design Block -->
@@ -26,7 +26,7 @@
       <div class="mb-12 lg:mb-0">
         <div class="rounded-lg shadow-lg h-full block bg-white">
           <div class="flex justify-center">
-            <div class="p-4 bg-blue-800 rounded-full shadow-lg inline-block -mt-8">
+            <div class="p-4 bg-yellow-400 rounded-full shadow-lg inline-block -mt-8">
               <i class="fa fa-check text-white" aria-hidden="true"></i>
             </div>
           </div>
@@ -51,7 +51,7 @@
       <div class="mb-12 lg:mb-0">
         <div class="rounded-lg shadow-lg h-full block bg-white">
           <div class="flex justify-center">
-            <div class="p-4 bg-blue-800 rounded-full shadow-lg inline-block -mt-8">
+            <div class="p-4 bg-yellow-400 rounded-full shadow-lg inline-block -mt-8">
               <i class="fa fa-times text-white" aria-hidden="true"></i>
             </div>
           </div>
@@ -68,7 +68,7 @@
       <div class="">
         <div class="rounded-lg shadow-lg h-full block bg-white">
           <div class="flex justify-center">
-            <div class="p-4 bg-blue-800 rounded-full shadow-lg inline-block -mt-8">
+            <div class="p-4 bg-yellow-400 rounded-full shadow-lg inline-block -mt-8">
               <svg
                 class="w-7 h-7 text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +94,9 @@
   </section>
   <!-- Section: Design Block -->
 
-
+<c:if test="${not empty added }" >
+                      <p class="text-center text-green-600">${added }</p>
+                  <c:remove var="added" />
 
     <div class="relative sm:max-w-xl sm:mx-auto">
       <form action="AddChefRayonServlet" method="post" class="relative px-8 py-8 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
@@ -103,6 +105,7 @@
             <div class="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">m</div>
             <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
               <h2 class="leading-relaxed">Ajouter un chef du  rayon</h2>
+
               <p class="text-sm text-gray-500 font-normal leading-relaxed">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
             </div>
           </div>

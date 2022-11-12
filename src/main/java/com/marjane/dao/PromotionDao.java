@@ -83,22 +83,23 @@ public class PromotionDao {
 
     }
 
-    public int nonTraits(){
-        int status =0;
-        int idP = -1, result = 0;
+    public int nonTraits(int idCategory){
+        int status =-1;
+        int idP = 0, result = 0;
 
-        Query qUpdate = session.createQuery("UPDATE Promotion set status =:s WHERE status=:udStatus");
+        Query qUpdate = session.createQuery("UPDATE Promotion set status =:s WHERE status=:udStatus and category_id=:idCategory");
         qUpdate.setParameter("s",status);
-        qUpdate.setParameter("idP",idP);
+        qUpdate.setParameter("udStatus",idP);
+        qUpdate.setParameter("idCategory",idCategory);
         int r = qUpdate.executeUpdate();
+        transaction.commit();
         if(r>0){
-            result = 1;
+            return result = 1;
         }
         else {
-            result = -10000;
+            return result = -1;
         }
-        transaction.commit();
-        return result =0;
+
     }
 
     public void listPromotionByIdCategory() throws ParseException {

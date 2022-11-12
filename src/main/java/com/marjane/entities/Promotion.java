@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.Date;
 
 @Entity
+@Table(name = "promotion")
 @Data
 @NoArgsConstructor
 //@NamedQuery(name = "Category.name" , query = "FROM Category order by id desc")

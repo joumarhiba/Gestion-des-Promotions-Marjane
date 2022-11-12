@@ -13,7 +13,7 @@
 
 <div class="h-screen w-full bg-white relative flex">
 <div class="w-full h-full flex flex-col justify-between">
-<main class="container -top-3/4 flex relative">
+<main class="container flex relative">
       <div class="h-full w-full m-4 flex flex-wrap items-start justify-center rounded-tl grid-flow-col auto-cols-max gap-4">
 
             <div class="text-center flex justify-center flex-col">
@@ -110,18 +110,7 @@
                 </div>
             </div>
 
-           <!--   <div class="h-full w-full m-4 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4">
-                <h2>ffffffff ffffffffffffff fffff fffff</h2>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                          <div class="w-96 h-60 rounded-lg flex-shrink-0 flex-grow bg-gray-400"></div>
-                        </div> -->
+
                   </div>
  </main>
       </div>

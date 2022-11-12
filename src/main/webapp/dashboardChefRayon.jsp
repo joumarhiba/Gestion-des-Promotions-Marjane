@@ -5,49 +5,27 @@
   <%@include file="helpers/links.jsp" %>
   <%@page import="com.marjane.dao.ChefRayonDao"%>
   <%@page import="com.marjane.entities.Category"%>
-  <%@page import="java.util.List"%>
+  <%@page import="java.util.*"%>
+  <%@page import="java.text.*"%>
 </head>
 <body>
 <%@include file="sidebarCRayon.jsp" %>
 
 
 
-<div class="container -top-3/4 flex relative place-content-center">
-<!-- <div class="max-w-full mx-4 py-6 sm:mx-auto sm:px-6 lg:px-8">
-    <div class="sm:flex sm:space-x-4">
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow transform transition-all mb-4 w-full sm:w-1/3 sm:my-8">
-            <div class="bg-white p-5">
-                <div class="sm:flex sm:items-start">
-                    <div class="text-center sm:mt-0 sm:ml-2 sm:text-left">
-                        <h3 class="text-sm leading-6 font-medium text-gray-400">Total Subscribers</h3>
-                        <p class="text-3xl font-bold text-black">71,897</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow transform transition-all mb-4 w-full sm:w-1/3 sm:my-8">
-            <div class="bg-white p-5">
-                <div class="sm:flex sm:items-start">
-                    <div class="text-center sm:mt-0 sm:ml-2 sm:text-left">
-                        <h3 class="text-sm leading-6 font-medium text-gray-400">Avg. Open Rate</h3>
-                        <p class="text-3xl font-bold text-black">58.16%</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow transform transition-all mb-4 w-full sm:w-1/3 sm:my-8">
-            <div class="bg-white p-5">
-                <div class="sm:flex sm:items-start">
-                    <div class="text-center sm:mt-0 sm:ml-2 sm:text-left">
-                        <h3 class="text-sm leading-6 font-medium text-gray-400">Avg. Click Rate</h3>
-                        <p class="text-3xl font-bold text-black">24.57%</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-<div class="mb-8 overflow-x-auto relative">
+<div class="container">
+
+<div class="my-8 ">
+  <form action="LogoutChefRayonServlet" method="post" class="flex flex-row justify-content-end">
+                <input type="hidden" value="${idCategory }" name="idCategory" />
+
+               <button type="submit" class="bg-yellow-500 p-2 rounded-md">
+                Deconnecter
+               </button>
+             </form>
+             </div>
+
+<div class="mt-12 overflow-x-auto relative flex-row">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -64,9 +42,15 @@
         </thead>
         <%
         ChefRayonDao chefRayonDao = new ChefRayonDao();
-        int idCategory = chefRayonDao.validate("chefBbb@gmail.com","1234");
-        //int id = chefRayonDao.promoInfos(idCategory);
-        List<Object> promos = chefRayonDao.getPromotions(idCategory);
+        int idCategory = chefRayonDao.validate("chefMutlimedia@gmail.com","1234");
+        DateFormat formatter = new SimpleDateFormat("HH:mm");
+        String testTime = formatter.format(new Date());
+        Date date1=new SimpleDateFormat("HH:mm").parse(testTime);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date1);
+        cal.add(Calendar.DATE, 1);
+        List<Object> promos = chefRayonDao.getPromotions(idCategory, cal.getTime());
+        if(promos.size() > 0) {
         for(int i = 0 ; i < promos.size(); i++) {
         %>
         <tbody>
@@ -78,6 +62,7 @@
                 </td>
                 <td class="py-4 px-6">
                 <form method="post" action="UpdatePromotionServlet">
+                <input type="hidden" value="${idCategory }" name="idCategory" />
                     <input type="hidden" value="23" name="idPromo" />
                     <button type="submit" class="text-green-900 hover:text-green-600">appliquer</button>
                 </form>
@@ -86,8 +71,13 @@
         </tbody>
         <%
         }
+        }else {
         %>
     </table>
+    <p>time outtttttttttttttttt !!!!!!!!!!!!</p>
+    <%
+    }
+    %>
 </div>
 </div>
 

@@ -15,54 +15,52 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet( name = "CenterAdminServlet" ,urlPatterns = {"/CenterAdminServlet"})
-public class CenterAdmin extends HttpServlet {
+@WebServlet(name = "UpdateAdminServlet" ,urlPatterns = {"/UpdateAdminServlet"})
+public class UpdateAdmin extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      //  this.updateAdmin(req, resp);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        addCenterAdmin(req, resp);
+        updateAdmin(req, resp);
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
-
-    public void addCenterAdmin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void updateAdmin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        AdminGen aGen = new AdminGen();
+        aGen.setAdminId(1);
+        aGen.setEmail("supAdmin@gmail.com");
+        aGen.setRole(0);
         try {
-            AdminGen aGen = new AdminGen();
-            aGen.setAdminId(1);
-            aGen.setEmail("supAdmin@gmail.com");
-            aGen.setRole(0);
-
             Admin admin = new Admin();
             Center center = new Center();
             String fullname = req.getParameter("fullname");
             String email = req.getParameter("email");
             String ville = req.getParameter("ville");
-            String p = "123456";
-            CryptPwd cp = new CryptPwd();
-            String hashedP = cp.cryptage(p);
-            admin.setPassword(hashedP);
+            int role = Integer.parseInt(req.getParameter("role"));
+            int idAdmin = Integer.parseInt(req.getParameter("idAdmin"));
             admin.setAdminGen(aGen);
-            admin.setRole(1);
+            admin.setRole(role);
             admin.setFullname(fullname);
             admin.setEmail(email);
+            admin.setId(idAdmin);
             center.setAdmin(admin);
             center.setVille(ville);
 
             AdminDao adminDao = new AdminDao();
-            adminDao.addAdmin(admin);
+            adminDao.updateCenterAdmin(aGen,email,fullname, role, idAdmin);
             CenterDao centerDao = new CenterDao();
-            centerDao.addCenter(center);
+            centerDao.updateCenter(ville,idAdmin);
+            // resp.sendRedirect("/dashboardAdminGen.jsp");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/dashboardAdminGen.jsp");
             requestDispatcher.forward(req, resp);
 
 
         }catch (Exception e){
             e.printStackTrace();
-            resp.getWriter().println("error: "+e.getMessage());
+            resp.getWriter().println("EEEEEEEEEError: "+e.getMessage());
         }
-
     }
+
 }

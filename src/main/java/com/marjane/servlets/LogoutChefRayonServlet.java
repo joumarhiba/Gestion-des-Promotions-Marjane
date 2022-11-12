@@ -1,5 +1,6 @@
 package com.marjane.servlets;
 
+import com.marjane.dao.ChefRayonDao;
 import com.marjane.dao.PromotionDao;
 
 import javax.servlet.RequestDispatcher;
@@ -15,23 +16,24 @@ import java.io.IOException;
 public class LogoutChefRayonServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false); //Fetch session object
         PromotionDao promotionDao = new PromotionDao();
+        int idCategory = Integer.parseInt(req.getParameter("idCategory"));
+        int result = promotionDao.nonTraits(idCategory);
         try {
             if (session != null) //If session is not null
             {
 
-              //  int result = promotionDao.nonTraits();
-                // if(result == 1){
+                if(result == 1){
                     session.invalidate(); //removes all session attributes bound to the session
                     req.setAttribute("errMessage", "You have logged out successfully");
                     RequestDispatcher requestDispatcher = req.getRequestDispatcher("/index.jsp");
                     requestDispatcher.forward(req, resp);
                     System.out.println("Logged out");
-               // }else{
-               //   resp.getWriter().println("result : "+result);
-             //  }
+                }else{
+                  resp.getWriter().println("result : "+result);
+               }
 
             } else {
                 resp.getWriter().println("logout no found");

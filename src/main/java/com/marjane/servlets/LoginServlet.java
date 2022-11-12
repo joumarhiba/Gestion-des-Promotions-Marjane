@@ -3,6 +3,7 @@ package com.marjane.servlets;
 import com.marjane.CryptPwd;
 import com.marjane.dao.AdminDao;
 import com.marjane.dao.ChefRayonDao;
+import com.marjane.entities.Admin;
 
 import  javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -43,9 +44,11 @@ public class LoginServlet extends HttpServlet {
         String hashedP = cp.cryptage(password);
 
         AdminDao adminDao = new AdminDao();
+        Admin admin = new Admin();
         ChefRayonDao chefRayonDao = new ChefRayonDao();
        if(role == 2){
            if(adminDao.validate(email,hashedP)) {
+               req.setAttribute("supAdmin",email);
                RequestDispatcher requestDispatcher = req.getRequestDispatcher("adminPage.jsp");
                requestDispatcher.forward(req, resp);
                resp.getWriter().println("in if");
@@ -55,9 +58,12 @@ public class LoginServlet extends HttpServlet {
                throw new Exception("username or password is wrong ........");
            }
         } else if (role == 3) {
-           if(chefRayonDao.validate(email,password) != 0) {
-               RequestDispatcher requestDispatcher = req.getRequestDispatcher("dashboardChefRayon.jsp");
-               requestDispatcher.forward(req, resp);
+           int idCategory = chefRayonDao.validate(email,password);
+           if(idCategory != 0) {
+               req.setAttribute("idCategory",idCategory);
+               req.setAttribute("email",email);
+              RequestDispatcher requestDispatcher = req.getRequestDispatcher("dashboardChefRayon.jsp");
+              requestDispatcher.forward(req, resp);
            }
            else{
                resp.getWriter().println(email+"////"+password);
@@ -66,6 +72,9 @@ public class LoginServlet extends HttpServlet {
            if(adminDao.validate(email,password)) {
                RequestDispatcher requestDispatcher = req.getRequestDispatcher("dashboardAdminGen.jsp");
                requestDispatcher.forward(req, resp);
+           }
+           else {
+               resp.getWriter().println(password);
            }
        }
 
